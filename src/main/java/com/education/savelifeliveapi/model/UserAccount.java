@@ -24,5 +24,10 @@ public class UserAccount {
     private int petsNumber;
     private boolean addsOn;
     private boolean premiumOn;
+    @OneToMany
+    private List<Blog> blog;
+    @OneToMany
+    private List<Appointment> appointments;
+
 
 }

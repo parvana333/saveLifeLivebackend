@@ -3,6 +3,7 @@ package com.education.savelifeliveapi.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,6 +21,10 @@ public class VetAccount {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;
+    @OneToMany
+    private List<Blog> blog;
+    @OneToMany
+    private List<Appointment> appointments;
 
 
 }
