@@ -1,10 +1,11 @@
 package com.education.savelifeliveapi.service;
 
-import com.education.savelifeliveapi.exception.AlreadExistException;
+import com.education.savelifeliveapi.exception.AlreadyExistException;
 import com.education.savelifeliveapi.model.Appointment;
 import com.education.savelifeliveapi.model.Pet;
 import com.education.savelifeliveapi.repository.AppointmentRepo;
 import com.education.savelifeliveapi.repository.PetRepo;
+import com.education.savelifeliveapi.repository.UserAccountRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class UserAccountService {
     
     private final PetRepo petRepo;
     private final AppointmentRepo appointmentRepo;
+    private final UserAccountRepo userAccountRepo;
 
     public Pet addPet(Pet pet){
         return petRepo.save(pet);
@@ -23,8 +25,7 @@ public class UserAccountService {
 
     public Appointment requestAppointment(Appointment appointment)  {
         Optional<Appointment> appointmentById = appointmentRepo.findById(appointment.getId());
-        if(appointmentById.isPresent()) throw new AlreadExistException("Appointment already exists");
-
+        if(appointmentById.isPresent()) throw new AlreadyExistException("Appointment already exists");
          return null;
     }
 

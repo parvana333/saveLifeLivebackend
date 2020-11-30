@@ -3,7 +3,6 @@ package com.education.savelifeliveapi.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Clob;
 
 @Entity
 @Data
@@ -20,5 +19,7 @@ public class Pet {
     private String remarks;
     @ManyToOne
     private UserAccount userAccount;
+    private double weight;
+    private double height;
 
 }
