@@ -5,6 +5,7 @@ import com.education.savelifeliveapi.exception.AlreadyExistException;
 import com.education.savelifeliveapi.exception.EmailExistException;
 import com.education.savelifeliveapi.exception.UserNameExistException;
 import com.education.savelifeliveapi.model.User;
+import com.education.savelifeliveapi.model.UserAccount;
 import com.education.savelifeliveapi.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,21 @@ public class UserService {
             if(userByUserName.get().getPassword().equals(md5Pass)) return true;
         }
         return false;
+    }
+    public User updateUser(User user){
+        String newPassword=user.getPassword();
+        String newemail=user.getEmail();
+        String newUsername=user.getUserName();
+        String newphone=user.getPhone();
+        User newUser=new User();
+        newUser.setPassword(newPassword);
+        newUser.setEmail(newemail);
+        newUser.setUserName(newUsername);
+        newUser.setPhone(newphone);
+        return newUser;
+
+
+
     }
 
 }

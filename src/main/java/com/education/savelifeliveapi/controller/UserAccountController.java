@@ -1,6 +1,7 @@
 package com.education.savelifeliveapi.controller;
 
 import com.education.savelifeliveapi.model.Pet;
+import com.education.savelifeliveapi.model.UserAccount;
 import com.education.savelifeliveapi.service.UserAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,11 @@ public class UserAccountController {
     public ResponseEntity<Pet> addPet(@RequestBody Pet pet){
         Pet savedPet = userAccountService.addPet(pet);
         return ResponseEntity.ok(savedPet);
+    }
+
+    @PostMapping("addOwner")
+    public ResponseEntity<UserAccount> addUserAccount(@RequestBody UserAccount userAccount){
+        return ResponseEntity.ok(userAccountService.addUserAccount(userAccount));
     }
 
 

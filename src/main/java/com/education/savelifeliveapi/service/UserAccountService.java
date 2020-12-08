@@ -3,6 +3,7 @@ package com.education.savelifeliveapi.service;
 import com.education.savelifeliveapi.exception.AlreadyExistException;
 import com.education.savelifeliveapi.model.Appointment;
 import com.education.savelifeliveapi.model.Pet;
+import com.education.savelifeliveapi.model.UserAccount;
 import com.education.savelifeliveapi.repository.AppointmentRepo;
 import com.education.savelifeliveapi.repository.PetRepo;
 import com.education.savelifeliveapi.repository.UserAccountRepo;
@@ -27,6 +28,9 @@ public class UserAccountService {
         Optional<Appointment> appointmentById = appointmentRepo.findById(appointment.getId());
         if(appointmentById.isPresent()) throw new AlreadyExistException("Appointment already exists");
          return null;
+    }
+    public UserAccount addUserAccount(UserAccount userAccount){
+      return  userAccountRepo.save(userAccount);
     }
 
 

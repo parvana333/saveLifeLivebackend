@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExceptionController {
     @org.springframework.web.bind.annotation.ExceptionHandler(AlreadyExistException.class)
     public ExceptionEntity handleAlreadyExistException(){
-        //log.info(ex.getMessage());
         return ExceptionEntity.builder()
                 .code(409)
                 .description("Already exists")
@@ -25,18 +24,16 @@ public class ExceptionController {
     }
     @org.springframework.web.bind.annotation.ExceptionHandler(EmailExistException.class)
     public ExceptionEntity handleEmailExistException(){
-       // log.info(ex.getMessage());
         return ExceptionEntity.builder()
                 .code(409)
-                .description("")
+                .description("already exist")
                 .build();
     }
     @org.springframework.web.bind.annotation.ExceptionHandler(UserNameExistException.class)
     public ExceptionEntity handleUserNameExistException(){
-        //log.info(ex.getMessage());
         return ExceptionEntity.builder()
                 .code(409)
-                .description("")
+                .description("already exist")
                 .build();
     }
 }
