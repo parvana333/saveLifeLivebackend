@@ -3,7 +3,9 @@ package com.education.savelifeliveapi.dto;
 import lombok.Data;
 
 @Data
+
 public class UserDto {
-    private String userName;
-    private String password;
+    private String username;
+    private String email;
+    private String type;
 }

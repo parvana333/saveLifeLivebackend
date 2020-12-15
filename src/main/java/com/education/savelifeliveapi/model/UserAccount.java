@@ -1,32 +1,34 @@
 package com.education.savelifeliveapi.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Data
-public class UserAccount {
+public class UserAccount implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String familyName;
     private String address;
     private String country;
     private String gender;
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private User user;
     @OneToMany(mappedBy ="userAccount")
     private List<Pet> pet;
     private int petsNumber;
     private boolean addsOn;
     private boolean premiumOn;
-    @OneToMany
+    @OneToMany(mappedBy = "userAccount")
     private List<Blog> blog;
-    @OneToMany
+    @OneToMany(mappedBy = "userAccount")
     private List<Appointment> appointments;
 
 

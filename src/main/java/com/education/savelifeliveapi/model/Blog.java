@@ -1,14 +1,16 @@
 package com.education.savelifeliveapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class Blog {
+public class Blog implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,9 +20,13 @@ public class Blog {
     private String image;
     @CreationTimestamp
     private LocalDateTime createdDateTime;
+    @JsonIgnore
     @ManyToOne
+    @JoinColumn(name="useraccount_id")
     private UserAccount userAccount;
+    @JsonIgnore
     @ManyToOne
+    @JoinColumn(name="vetaccount_id")
     private VetAccount vetAccount;
 
 }

@@ -1,11 +1,9 @@
 package com.education.savelifeliveapi.controller;
 
-import com.education.savelifeliveapi.exception.AlreadyExistException;
-import com.education.savelifeliveapi.exception.EmailExistException;
-import com.education.savelifeliveapi.exception.ExceptionEntity;
-import com.education.savelifeliveapi.exception.UserNameExistException;
+import com.education.savelifeliveapi.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,4 +34,19 @@ public class ExceptionController {
                 .description("already exist")
                 .build();
     }
+    @org.springframework.web.bind.annotation.ExceptionHandler(HttpMessageNotReadableException.class)
+    public ExceptionEntity handleHttpMessageNotReadableException() {
+        return ExceptionEntity.builder()
+                .code(404)
+                .description("Not valid json format")
+                .build();
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(UserNotFoundException.class)
+    public ExceptionEntity handleUserNotFoundException() {
+        return ExceptionEntity.builder()
+                .code(404)
+                .description("user has not registered yet")
+                .build();
+    }
+
 }

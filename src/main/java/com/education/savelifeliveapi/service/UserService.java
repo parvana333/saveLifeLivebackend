@@ -4,12 +4,17 @@ import com.education.savelifeliveapi.dto.UserDto;
 import com.education.savelifeliveapi.exception.AlreadyExistException;
 import com.education.savelifeliveapi.exception.EmailExistException;
 import com.education.savelifeliveapi.exception.UserNameExistException;
+import com.education.savelifeliveapi.exception.UserNotFoundException;
 import com.education.savelifeliveapi.model.User;
 import com.education.savelifeliveapi.model.UserAccount;
+import com.education.savelifeliveapi.repository.UserAccountRepo;
 import com.education.savelifeliveapi.repository.UserRepo;
+import com.education.savelifeliveapi.repository.VetRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.Optional;
@@ -17,16 +22,22 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class UserService {
     private final UserRepo userRepo;
+    private final VetRepo vetRepo;
+    private final UserAccountRepo userAccountRepo;
 
     public User register(User user) {
-        log.info("userName={} email={}  phone={}", user.getUserName(), user.getEmail(), user.getPhone());
-        if (userRepo.findUserByUserName(user.getUserName()).isPresent()) {
+        log.info("userName={} email={}  phone={}", user.getUsername(), user.getEmail(), user.getPhone());
+        if(user.getUsername()==null || user.getEmail()==null || user.getPassword()==null ){
+            throw new HttpMessageNotReadableException("No proper json format");
+        }
+        if (userRepo.findUserByUsername(user.getUsername()).isPresent()) {
             throw new UserNameExistException("this UserName is already in use");
         } else if (userRepo.findUserByEmail(user.getEmail()).isPresent()) {
             throw new EmailExistException("this email is already in use");
-        } else if (userRepo.findUserByEmailAndUserName(user.getUserName(), user.getEmail()).isPresent()) {
+        } else if (userRepo.findUserByEmailAndUsername(user.getUsername(), user.getEmail()).isPresent()) {
             throw new AlreadyExistException("Already exists");
         } else {
             String md5Pass= DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
@@ -35,28 +46,32 @@ public class UserService {
         }
     }
 
-    public Boolean login(UserDto userDto){
-        Optional<User> userByUserName = userRepo.findUserByUserName(userDto.getUserName());
+    public UserDto login(User user){
+        Optional<User> userByUserName = userRepo.findUserByUsername(user.getUsername());
         if(userByUserName.isPresent()){
-            String md5Pass= DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes());
-            if(userByUserName.get().getPassword().equals(md5Pass)) return true;
+            UserDto userDto=new UserDto();
+            String md5Pass= DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+            if(userByUserName.get().getPassword().equals(md5Pass)) {
+                vetRepo.findByUser_Id(userByUserName.get().getId()).ifPresent(x->userDto.setType("Vet"));
+                userAccountRepo.findByUser_Id(userByUserName.get().getId()).ifPresent(x->userDto.setType("Owner"));
+                userDto.setUsername(user.getUsername());
+                userDto.setEmail(userByUserName.get().getEmail());
+                return userDto;
+            }
         }
-        return false;
+        throw new UserNotFoundException("User has not registred");
     }
     public User updateUser(User user){
         String newPassword=user.getPassword();
         String newemail=user.getEmail();
-        String newUsername=user.getUserName();
+        String newUsername=user.getUsername();
         String newphone=user.getPhone();
         User newUser=new User();
         newUser.setPassword(newPassword);
         newUser.setEmail(newemail);
-        newUser.setUserName(newUsername);
+        newUser.setUsername(newUsername);
         newUser.setPhone(newphone);
         return newUser;
-
-
-
     }
 
 }

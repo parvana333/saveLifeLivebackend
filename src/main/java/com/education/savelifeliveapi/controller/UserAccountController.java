@@ -5,10 +5,7 @@ import com.education.savelifeliveapi.model.UserAccount;
 import com.education.savelifeliveapi.service.UserAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("userApi")
@@ -22,9 +19,9 @@ public class UserAccountController {
         return ResponseEntity.ok(savedPet);
     }
 
-    @PostMapping("addOwner")
-    public ResponseEntity<UserAccount> addUserAccount(@RequestBody UserAccount userAccount){
-        return ResponseEntity.ok(userAccountService.addUserAccount(userAccount));
+    @PostMapping("addOwner/{id}")
+    public ResponseEntity<UserAccount> addUserAccount(@RequestBody UserAccount userAccount, @PathVariable Long id){
+        return ResponseEntity.ok(userAccountService.addUserAccount(userAccount,id));
     }
 
 
