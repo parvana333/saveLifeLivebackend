@@ -56,11 +56,12 @@ public class UserServiceTest {
         userBack=new User();
         userBack.setId(1l);
         userBack.setUsername("parvana");
-        userBack.setPassword("7363a0d0604902af7b70b271a0b96480");
+        userBack.setPassword("202cb962ac59075b964b07152d234b70");
         userBack.setEmail("parvan@gmail.com");
         userBack.setPhone("4489525");
 
         userDto=new UserDto();
+        userDto.setId(1L);
         userDto.setUsername("parvana");
         userDto.setEmail("parvan@gmail.com");
         userDto.setType("Vet");
@@ -69,8 +70,6 @@ public class UserServiceTest {
         vetAccount.setUser(user);
         vetAccount.setId(1L);
     }
-
-
     @Test
     void registerTest(){
         given(userService.register(user)).willReturn(user);
@@ -81,17 +80,8 @@ public class UserServiceTest {
     @Test
     void loginTest(){
         given(userRepo.findUserByUsername(user.getUsername())).willReturn(Optional.of(userBack));
-        UserDto userDtoAnswer=userService.login(user);
-        given(userService.login(user)).willReturn(userDto);
         given(vetRepo.findByUser_Id(user.getId())).willReturn(Optional.of(vetAccount));
+        UserDto userDtoAnswer=userService.login(user);
         assertEquals(userDtoAnswer,userDto);
     }
-
-
-
-
-
-
-
-
 }
