@@ -20,5 +20,4 @@ public interface VetRepo extends JpaRepository<VetAccount,Long> {
     List<VetAccount> findVetAccountByCountryOrFirstNameOrClinicName(@Param("search") String searched);
 
 
-
 }

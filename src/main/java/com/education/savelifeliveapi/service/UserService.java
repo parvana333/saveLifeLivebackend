@@ -47,11 +47,16 @@ public class UserService {
     }
 
     public UserDto login(User user){
+        System.out.println("1");
         Optional<User> userByUserName = userRepo.findUserByUsername(user.getUsername());
+        System.out.println(userByUserName.get().getPassword());
         if(userByUserName.isPresent()){
+            System.out.println("3");
             UserDto userDto=new UserDto();
             String md5Pass= DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+            System.out.println(md5Pass);
             if(userByUserName.get().getPassword().equals(md5Pass)) {
+                System.out.println("4");
                 vetRepo.findByUser_Id(userByUserName.get().getId()).ifPresent(x->userDto.setType("Vet"));
                 userAccountRepo.findByUser_Id(userByUserName.get().getId()).ifPresent(x->userDto.setType("Owner"));
                 userDto.setUsername(user.getUsername());

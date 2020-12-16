@@ -24,28 +24,35 @@ public class ExceptionController {
     public ExceptionEntity handleEmailExistException(){
         return ExceptionEntity.builder()
                 .code(409)
-                .description("already exist")
+                .description(" Email already exist")
                 .build();
     }
     @org.springframework.web.bind.annotation.ExceptionHandler(UserNameExistException.class)
     public ExceptionEntity handleUserNameExistException(){
         return ExceptionEntity.builder()
                 .code(409)
-                .description("already exist")
+                .description("UserName already exist")
                 .build();
     }
     @org.springframework.web.bind.annotation.ExceptionHandler(HttpMessageNotReadableException.class)
     public ExceptionEntity handleHttpMessageNotReadableException() {
         return ExceptionEntity.builder()
-                .code(404)
+                .code(400)
                 .description("Not valid json format")
                 .build();
     }
     @org.springframework.web.bind.annotation.ExceptionHandler(UserNotFoundException.class)
     public ExceptionEntity handleUserNotFoundException() {
         return ExceptionEntity.builder()
-                .code(404)
+                .code(400)
                 .description("user has not registered yet")
+                .build();
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(GeneralException.class)
+    public ExceptionEntity handleGeneralException(){
+        return ExceptionEntity.builder()
+                .code(400)
+                .description("Something went wrong")
                 .build();
     }
 

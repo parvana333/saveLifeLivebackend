@@ -23,7 +23,11 @@ public class UserAccountService {
     private final UserAccountRepo userAccountRepo;
     private final UserRepo userRepo;
 
-    public Pet addPet(Pet pet){
+    public Pet addPet(Pet pet, Long id){
+        Optional<UserAccount> userAccountByUserId = userAccountRepo.findByUser_Id(id);
+        if(userAccountByUserId.isPresent()){
+            pet.setUserAccount(userAccountByUserId.get());
+        }
         return petRepo.save(pet);
     }
 

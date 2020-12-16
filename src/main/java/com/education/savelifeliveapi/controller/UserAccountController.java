@@ -1,5 +1,6 @@
 package com.education.savelifeliveapi.controller;
 
+import com.education.savelifeliveapi.exception.GeneralException;
 import com.education.savelifeliveapi.model.Pet;
 import com.education.savelifeliveapi.model.UserAccount;
 import com.education.savelifeliveapi.service.UserAccountService;
@@ -13,10 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserAccountController {
     private final UserAccountService userAccountService;
 
-    @PostMapping("addPet")
-    public ResponseEntity<Pet> addPet(@RequestBody Pet pet){
-        Pet savedPet = userAccountService.addPet(pet);
-        return ResponseEntity.ok(savedPet);
+    @PostMapping("addPet/{id}")
+    public ResponseEntity<Pet> addPet(@RequestBody Pet pet,@PathVariable Long id ){
+        return ResponseEntity.ok(userAccountService.addPet(pet,id));
     }
 
     @PostMapping("addOwner/{id}")

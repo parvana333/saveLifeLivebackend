@@ -19,15 +19,19 @@ public class UserAccount implements Serializable {
     private String address;
     private String country;
     private String gender;
+    @JsonIgnore
     @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private User user;
+    @JsonIgnore
     @OneToMany(mappedBy ="userAccount")
     private List<Pet> pet;
     private int petsNumber;
     private boolean addsOn;
     private boolean premiumOn;
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount")
     private List<Blog> blog;
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount")
     private List<Appointment> appointments;
 
