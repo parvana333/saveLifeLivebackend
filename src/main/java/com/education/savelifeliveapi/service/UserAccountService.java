@@ -5,10 +5,7 @@ import com.education.savelifeliveapi.model.Appointment;
 import com.education.savelifeliveapi.model.Pet;
 import com.education.savelifeliveapi.model.User;
 import com.education.savelifeliveapi.model.UserAccount;
-import com.education.savelifeliveapi.repository.AppointmentRepo;
-import com.education.savelifeliveapi.repository.PetRepo;
-import com.education.savelifeliveapi.repository.UserAccountRepo;
-import com.education.savelifeliveapi.repository.UserRepo;
+import com.education.savelifeliveapi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +19,7 @@ public class UserAccountService {
     private final AppointmentRepo appointmentRepo;
     private final UserAccountRepo userAccountRepo;
     private final UserRepo userRepo;
+    private final VetRepo vetRepo;
 
     public Pet addPet(Pet pet, Long id){
         Optional<UserAccount> userAccountByUserId = userAccountRepo.findByUser_Id(id);
@@ -37,6 +35,12 @@ public class UserAccountService {
          return null;
     }
     public UserAccount addUserAccount(UserAccount userAccount,Long id){
+        if(vetRepo.findByUser_Id(id).isPresent()){
+            throw new AlreadyExistException("already exist");
+        }
+        if(userAccountRepo.findByUser_Id(id).isPresent()){
+            throw new AlreadyExistException("already exist");
+        }
         Optional<User> userById = userRepo.findById(id);
         if(userById.isPresent()){
             userAccount.setUser(userById.get());
