@@ -26,8 +26,10 @@ public class VetAccount implements Serializable {
     @JsonIgnore
     @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private User user;
+    @JsonIgnore
     @OneToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "vetAccount")
     private List<Blog> blog;
+    @JsonIgnore
     @OneToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "vetAccount")
     private List<Appointment> appointments;
 }

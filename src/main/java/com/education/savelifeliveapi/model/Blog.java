@@ -20,11 +20,9 @@ public class Blog implements Serializable {
     private String image;
     @CreationTimestamp
     private LocalDateTime createdDateTime;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="useraccount_id")
     private UserAccount userAccount;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="vetaccount_id")
     private VetAccount vetAccount;

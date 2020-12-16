@@ -16,9 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class BlogController {
-
     private final  BlogService blogService;
-
     @PostMapping("save/{id}")
     public ResponseEntity<Blog> addBlog(@RequestBody Blog blog, @PathVariable Long id){
         return ResponseEntity.ok(blogService.addBlog(blog,id));
