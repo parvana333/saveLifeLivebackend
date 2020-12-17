@@ -1,5 +1,4 @@
 package com.education.savelifeliveapi.service;
-
 import com.education.savelifeliveapi.dto.UserDto;
 import com.education.savelifeliveapi.exception.AlreadyExistException;
 import com.education.savelifeliveapi.exception.EmailExistException;
@@ -48,14 +47,18 @@ public class UserService {
 
     public UserDto login(User user){
         Optional<User> userByUserName = userRepo.findUserByUsername(user.getUsername());
-        System.out.println(userByUserName.get().getPassword());
         if(userByUserName.isPresent()){
             UserDto userDto=new UserDto();
             String md5Pass= DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
-            System.out.println(md5Pass);
             if(userByUserName.get().getPassword().equals(md5Pass)) {
-                vetRepo.findByUser_Id(userByUserName.get().getId()).ifPresent(x->userDto.setType("Vet"));
-                userAccountRepo.findByUser_Id(userByUserName.get().getId()).ifPresent(x->userDto.setType("Owner"));
+                if(vetRepo.findByUser_Id(userByUserName.get().getId()).isPresent()){
+                    userDto.setType("Vet");
+                    userDto.setVetAccount(vetRepo.findByUser_Id(userByUserName.get().getId()).get());
+                }
+                if(userAccountRepo.findByUser_Id(userByUserName.get().getId()).isPresent()){
+                    userDto.setType("Owner");
+                    userDto.setUserAccount(userAccountRepo.findByUser_Id(userByUserName.get().getId()).get());
+                }
                 userDto.setId(userByUserName.get().getId());
                 userDto.setUsername(user.getUsername());
                 userDto.setEmail(userByUserName.get().getEmail());
@@ -67,11 +70,17 @@ public class UserService {
     public User updatePass(String name,Long id){
         Optional<User> userbyId = userRepo.findById(id);
         if(userbyId.isPresent()){
-            String md5 = DigestUtils.md5DigestAsHex(userbyId.get().getPassword().getBytes());
+            String md5 = DigestUtils.md5DigestAsHex(name.getBytes());
             userbyId.get().setPassword(md5);
         }
         return userRepo.save(userbyId.get());
-
+    }
+    public User updateEmail(String name,Long id){
+        Optional<User> userbyId = userRepo.findById(id);
+        if(userbyId.isPresent()){
+            userbyId.get().setEmail(name);
+        }
+        return userRepo.save(userbyId.get());
     }
 
 }

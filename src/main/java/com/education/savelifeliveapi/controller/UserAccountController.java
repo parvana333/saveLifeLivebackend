@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("userApi")
 @RequiredArgsConstructor
@@ -25,6 +27,12 @@ public class UserAccountController {
     @PostMapping("addOwner/{id}")
     public ResponseEntity<UserAccount> addUserAccount(@RequestBody UserAccount userAccount, @PathVariable Long id){
         return ResponseEntity.ok(userAccountService.addUserAccount(userAccount,id));
+    }
+
+    @GetMapping("/myPets/{id}")
+    public ResponseEntity<List<Pet>> getAllPet(@PathVariable Long id){
+        return ResponseEntity.ok(userAccountService.getMyPets(id));
+
     }
 
 

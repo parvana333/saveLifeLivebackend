@@ -55,5 +55,12 @@ public class ExceptionController {
                 .description("Something went wrong")
                 .build();
     }
+    @org.springframework.web.bind.annotation.ExceptionHandler(NoPetException.class)
+    public ExceptionEntity handleNoPetException(){
+        return ExceptionEntity.builder()
+                .code(400)
+                .description("user does not have pets")
+                .build();
+    }
 
 }
