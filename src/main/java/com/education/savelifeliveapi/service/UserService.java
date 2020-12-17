@@ -64,17 +64,14 @@ public class UserService {
         }
         throw new UserNotFoundException("User has not registred");
     }
-    public User updateUser(User user){
-        String newPassword=user.getPassword();
-        String newemail=user.getEmail();
-        String newUsername=user.getUsername();
-        String newphone=user.getPhone();
-        User newUser=new User();
-        newUser.setPassword(newPassword);
-        newUser.setEmail(newemail);
-        newUser.setUsername(newUsername);
-        newUser.setPhone(newphone);
-        return newUser;
+    public User updatePass(String name,Long id){
+        Optional<User> userbyId = userRepo.findById(id);
+        if(userbyId.isPresent()){
+            String md5 = DigestUtils.md5DigestAsHex(userbyId.get().getPassword().getBytes());
+            userbyId.get().setPassword(md5);
+        }
+        return userRepo.save(userbyId.get());
+
     }
 
 }

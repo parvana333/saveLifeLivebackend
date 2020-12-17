@@ -1,5 +1,6 @@
 package com.education.savelifeliveapi.controller;
 
+import com.education.savelifeliveapi.dto.SearchDto;
 import com.education.savelifeliveapi.dto.UserDto;
 import com.education.savelifeliveapi.model.User;
 import com.education.savelifeliveapi.service.UserService;
@@ -29,9 +30,9 @@ public class UserController {
         return userService.login(user);
 
     }
-    @PutMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody User user){
-        return ResponseEntity.ok(userService.updateUser(user));
+    @PutMapping("/update/password/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody SearchDto searchDto, @PathVariable Long id){
+        return ResponseEntity.ok(userService.updatePass(searchDto.getName(),id));
     }
 
 }
