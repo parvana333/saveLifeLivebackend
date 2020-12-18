@@ -35,9 +35,9 @@ public class UserAccountController {
         return ResponseEntity.ok(userAccountService.getMyPets(id));
 
     }
-    @PostMapping
-    public ResponseEntity<Appointment> saveAppoinment(@RequestBody Appointment appointment,@PathVariable Long id){
-        return ResponseEntity.ok(userAccountService.requestAppointment(appointment,id));
+    @PostMapping("/appoinment/{userId}/{vetId}")
+    public ResponseEntity<Appointment> saveAppoinment(@RequestBody Appointment appointment,@PathVariable Long userId,@PathVariable Long vetId){
+        return ResponseEntity.ok(userAccountService.requestAppointment(appointment,userId,vetId));
 
     }
 
