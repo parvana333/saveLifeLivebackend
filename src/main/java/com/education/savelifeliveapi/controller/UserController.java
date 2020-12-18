@@ -32,6 +32,7 @@ public class UserController {
     }
     @PutMapping("/update/password/{id}")
     public ResponseEntity<User> updatePass(@RequestBody SearchDto searchDto, @PathVariable Long id){
+        log.info("name={} id={}",searchDto.getName(),id);
         return ResponseEntity.ok(userService.updatePass(searchDto.getName(),id));
     }
     @PutMapping("/update/email/{id}")

@@ -23,6 +23,7 @@ public class Appointment implements Serializable {
     @JoinColumn(name="useraccount_id")
     private UserAccount userAccount;
     private LocalDateTime appointmentDate;
+    @JsonIgnore
     @OneToMany(mappedBy = "appointment")
     private List<Question> quizQuestions;
 }

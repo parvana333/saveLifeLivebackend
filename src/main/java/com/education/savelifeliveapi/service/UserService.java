@@ -1,9 +1,6 @@
 package com.education.savelifeliveapi.service;
 import com.education.savelifeliveapi.dto.UserDto;
-import com.education.savelifeliveapi.exception.AlreadyExistException;
-import com.education.savelifeliveapi.exception.EmailExistException;
-import com.education.savelifeliveapi.exception.UserNameExistException;
-import com.education.savelifeliveapi.exception.UserNotFoundException;
+import com.education.savelifeliveapi.exception.*;
 import com.education.savelifeliveapi.model.User;
 import com.education.savelifeliveapi.model.UserAccount;
 import com.education.savelifeliveapi.repository.UserAccountRepo;
@@ -64,23 +61,30 @@ public class UserService {
                 userDto.setEmail(userByUserName.get().getEmail());
                 return userDto;
             }
+            else {
+                throw new PasswordisInCorrect("Password is not correct");
+
+            }
         }
         throw new UserNotFoundException("User has not registred");
     }
     public User updatePass(String name,Long id){
         Optional<User> userbyId = userRepo.findById(id);
-        if(userbyId.isPresent()){
+        if(userbyId.isPresent() && name!=null){
             String md5 = DigestUtils.md5DigestAsHex(name.getBytes());
             userbyId.get().setPassword(md5);
+            return userRepo.save(userbyId.get());
         }
-        return userRepo.save(userbyId.get());
+        throw  new UserNotFoundException("user does not exist");
+
     }
     public User updateEmail(String name,Long id){
         Optional<User> userbyId = userRepo.findById(id);
-        if(userbyId.isPresent()){
+        if(userbyId.isPresent() && name!=null){
             userbyId.get().setEmail(name);
+            return userRepo.save(userbyId.get());
         }
-        return userRepo.save(userbyId.get());
+        throw  new UserNotFoundException("user does not exist");
     }
 
 }

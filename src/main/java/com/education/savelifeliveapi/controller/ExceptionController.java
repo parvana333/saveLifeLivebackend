@@ -63,4 +63,12 @@ public class ExceptionController {
                 .build();
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(PasswordisInCorrect.class)
+    public ExceptionEntity handlePasswordIsIncorrect(){
+        return ExceptionEntity.builder()
+                .code(400)
+                .description("Password is incorrect")
+                .build();
+    }
+
 }

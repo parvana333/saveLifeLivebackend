@@ -69,6 +69,7 @@ public class UserServiceTest {
         vetAccount=new VetAccount();
         vetAccount.setUser(user);
         vetAccount.setId(1L);
+        userDto.setVetAccount(vetAccount);
     }
     @Test
     void registerTest(){

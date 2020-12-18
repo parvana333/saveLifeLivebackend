@@ -33,17 +33,25 @@ public class UserAccountService {
     public List<Pet> getMyPets(Long id){
         Optional<UserAccount> userAccountByUserId = userAccountRepo.findByUser_Id(id);
         if(userAccountByUserId.isPresent()){
-            return userAccountByUserId.get().getPet();
+            List<Pet> pet = userAccountByUserId.get().getPet();
+            if(pet.isEmpty()){
+                throw new NoPetException("user does not have pet");
+            }
+            else {
+                return pet;
+            }
         }
         throw new NoPetException("user does not have pet");
 
 
     }
 
-    public Appointment requestAppointment(Appointment appointment)  {
-        Optional<Appointment> appointmentById = appointmentRepo.findById(appointment.getId());
-        if(appointmentById.isPresent()) throw new AlreadyExistException("Appointment already exists");
-         return null;
+    public Appointment requestAppointment(Appointment appointment,Long id)  {
+        Optional<UserAccount> userAccountByUserId = userAccountRepo.findByUser_Id(id);
+        if(userAccountByUserId.isPresent()){
+            appointment.setUserAccount(userAccountByUserId.get());
+        }
+         return appointmentRepo.save(appointment);
     }
 
     public UserAccount addUserAccount(UserAccount userAccount,Long id){
